@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import WordleGame from './components/WordleGame'
 import './App.css'
 
 function App() {
@@ -6,7 +7,7 @@ function App() {
 
   return (
     <>
-     <h1>Hello</h1>
+     <WordleGame/>
     </>
   )
 }
