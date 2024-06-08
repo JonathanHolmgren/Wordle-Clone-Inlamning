@@ -3,8 +3,9 @@ import BoardTiles from './BoardTiles';
 import checkIfTwoWordMatch from '../utils/checkWord';
 import Keyboard from './Keyboard';
 import '../styles/WordleGame.css';
+const RANDOM_WORD_URL = 'http://localhost:5080';
 
-function WordleGame() {
+function WordleGame({ reset }) {
   const WORD_LENGTH = 5;
   const NUM_ATTEMPT = 6;
 
@@ -21,6 +22,25 @@ function WordleGame() {
   const [results, Setresult] = useState(Array(NUM_ATTEMPT).fill(''));
   const [checkWin, setCheckWin] = useState();
   const [countGuesses, setCounterGuesses] = useState(0);
+
+  const [newWord, SetNewWord] = useState('');
+
+  useEffect(() => {
+    FetchDataComponent();
+    resetGame();
+  }, [reset]);
+
+  async function FetchDataComponent() {
+    fetch(RANDOM_WORD_URL)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        SetNewWord(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
 
   useEffect(() => {
     if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
@@ -44,8 +64,8 @@ function WordleGame() {
 
   const submitGuess = () => {
     if (countGuesses <= NUM_ATTEMPT && guessedLetters.length == 5) {
-      console.log(checkIfTwoWordMatch('hello', guessedLetters.join('')));
-      setCheckWin(checkIfTwoWordMatch('hello', guessedLetters.join('')));
+      console.log(checkIfTwoWordMatch(newWord, guessedLetters.join('')));
+      setCheckWin(checkIfTwoWordMatch(newWord, guessedLetters.join('')));
       setCounterGuesses(countGuesses + 1);
       setGuessedLetters('');
     }
@@ -61,7 +81,6 @@ function WordleGame() {
       setGuessedLetters(guessedLetters.slice(0, -1));
     }
   }
-
   const resetGame = () => {
     Setresult(resetResult);
     SetguessWords(Array(NUM_ATTEMPT).fill(''));
@@ -70,7 +89,6 @@ function WordleGame() {
 
   return (
     <div className='container'>
-      <button onClick={resetGame}>Reset game</button>
       <BoardTiles
         guessWords={guessWords}
         results={results}
