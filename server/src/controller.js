@@ -1,8 +1,14 @@
 
-const targetWords = require('./targetWords.json');
+// const targetWords = require('./targetWords.json');
+import targetWords from './targetWords.json' assert { type: 'json' };
 
 
-const targetWord = targetWords[Math.floor(Math.random() * targetWords.length)]
+function generateNewWord(){
+
+  return targetWords[Math.floor(Math.random() * targetWords.length)]
+}
+
+
 
 
 
@@ -57,3 +63,5 @@ const targetWord = targetWords[Math.floor(Math.random() * targetWords.length)]
 
 
   console.log(checkIfTwoWordMatch("CYKLA", "HALLÅ"))
+
+  export default generateNewWord;
