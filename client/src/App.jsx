@@ -1,15 +1,21 @@
-import { useState } from 'react'
-import WordleGame from './components/WordleGame'
-import './App.css'
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import './App.css';
+import HomePage from './pages/HomePage';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-     <WordleGame/>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path='/homepage' element={<HomePage />} />
+          {/* <Route path="/highscore" element={<HighScore />}/> */}
+        </Routes>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import BoardRowTiles from './BoardRowTiles';
 
 import '../styles/BoardTiles.css';

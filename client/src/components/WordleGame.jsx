@@ -1,12 +1,20 @@
 import { useState, useEffect } from 'react';
 import BoardTiles from './BoardTiles';
-import '../styles/WordleGame.css';
 import checkIfTwoWordMatch from '../utils/checkWord';
 import Keyboard from './Keyboard';
+import '../styles/WordleGame.css';
 
 function WordleGame() {
   const WORD_LENGTH = 5;
   const NUM_ATTEMPT = 6;
+
+  const resetResult = [
+    ['active', 'active', 'active', 'active', 'active'],
+    ['active', 'active', 'active', 'active', 'active'],
+    ['active', 'active', 'active', 'active', 'active'],
+    ['active', 'active', 'active', 'active', 'active'],
+    ['active', 'active', 'active', 'active', 'active'],
+  ];
 
   const [guessedLetters, setGuessedLetters] = useState('');
   const [guessWords, SetguessWords] = useState(Array(NUM_ATTEMPT).fill(''));
@@ -54,9 +62,15 @@ function WordleGame() {
     }
   }
 
+  const resetGame = () => {
+    Setresult(resetResult);
+    SetguessWords(Array(NUM_ATTEMPT).fill(''));
+    setCounterGuesses(0);
+  };
+
   return (
-    <>
-      <button>Reset game</button>
+    <div className='container'>
+      <button onClick={resetGame}>Reset game</button>
       <BoardTiles
         guessWords={guessWords}
         results={results}
@@ -67,7 +81,7 @@ function WordleGame() {
         submitGuess={submitGuess}
         removeLetter={removeLetter}
       />
-    </>
+    </div>
   );
 }
 
