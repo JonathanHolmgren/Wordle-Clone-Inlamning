@@ -1,12 +1,11 @@
-.container{
+.containerHighScore{
 
     display: flex;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
     height: 100vh;
 
 }
-
 .scoreboard{
     display: grid;
     grid-template-rows: repeat(10, 1fr); /* Upprepa 5 kolumner med en bredd på minst 4em */

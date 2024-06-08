@@ -10,7 +10,7 @@ function HighscoreBoard() {
   ));
 
   return (
-    <div className='container'>
+    <div className='containerHighScore'>
       <div className='scoreboard'>
         <ul>{renderScores}</ul>
       </div>
