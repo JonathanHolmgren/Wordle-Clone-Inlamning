@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import './App.css';
 import HomePage from './pages/HomePage';
+import HighscorePage from './pages/HighscorePage';
+import './App.css';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
         <Routes>
           <Route index element={<HomePage />} />
           <Route path='/homepage' element={<HomePage />} />
-          {/* <Route path="/highscore" element={<HighScore />}/> */}
+          <Route path='/highscore' element={<HighscorePage />} />
         </Routes>
       </BrowserRouter>
     </>
