@@ -9,8 +9,30 @@ function WordleGame() {
   const NUM_ATTEMPT = 6;
 
   const [guessedLetters, setGuessedLetters] = useState('');
+  const [guessWords, SetguessWords] = useState(Array(NUM_ATTEMPT).fill(''));
+  const [results, Setresult] = useState(Array(NUM_ATTEMPT).fill(''));
   const [checkWin, setCheckWin] = useState();
   const [countGuesses, setCounterGuesses] = useState(0);
+
+  useEffect(() => {
+    if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
+      Setresult((curr) => {
+        const newresults = [...curr];
+        newresults[countGuesses] = checkWin;
+        return newresults;
+      });
+    }
+  }, [checkWin]);
+
+  useEffect(() => {
+    if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
+      SetguessWords((curr) => {
+        const newGuessWords = [...curr];
+        newGuessWords[countGuesses] = guessedLetters;
+        return newGuessWords;
+      });
+    }
+  }, [guessedLetters, countGuesses, NUM_ATTEMPT]);
 
   const submitGuess = () => {
     if (countGuesses <= NUM_ATTEMPT && guessedLetters.length == 5) {
@@ -36,10 +58,9 @@ function WordleGame() {
     <>
       <button>Reset game</button>
       <BoardTiles
-        guessedLetter={guessedLetters}
-        checkWin={checkWin}
+        guessWords={guessWords}
+        results={results}
         numOfAtt={NUM_ATTEMPT}
-        countGuesses={countGuesses}
       />
       <Keyboard
         onKeyClick={handleKeyPress}

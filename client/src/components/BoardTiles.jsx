@@ -3,30 +3,7 @@ import BoardRowTiles from './BoardRowTiles';
 
 import '../styles/BoardTiles.css';
 
-function BoardTiles({ guessedLetter, checkWin, numOfAtt, countGuesses }) {
-  const [guessWords, SetguessWords] = useState(Array(numOfAtt).fill(''));
-  const [results, Setresult] = useState(Array(numOfAtt).fill(''));
-
-  useEffect(() => {
-    if (countGuesses >= 0 && countGuesses < numOfAtt) {
-      Setresult((curr) => {
-        const newresults = [...curr];
-        newresults[countGuesses] = checkWin;
-        return newresults;
-      });
-    }
-  }, [checkWin]);
-
-  useEffect(() => {
-    if (countGuesses >= 0 && countGuesses < numOfAtt) {
-      SetguessWords((curr) => {
-        const newGuessWords = [...curr];
-        newGuessWords[countGuesses] = guessedLetter;
-        return newGuessWords;
-      });
-    }
-  }, [guessedLetter, countGuesses, numOfAtt]);
-
+function BoardTiles({ guessWords, results }) {
   return (
     <div data-guess-grid className='guess-grid'>
       <BoardRowTiles word={guessWords[0]} result={results[0 + 1]} />
