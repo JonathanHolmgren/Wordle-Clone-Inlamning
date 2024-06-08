@@ -1,0 +1,30 @@
+.container{
+
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    height: 100vh;
+
+}
+
+.scoreboard{
+    display: grid;
+    grid-template-rows: repeat(10, 1fr); /* Upprepa 5 kolumner med en bredd på minst 4em */
+    gap: .25em;
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 40em;
+    width: 30em;
+}
+
+.scoreboard ul{
+    list-style: none;
+}
+
+.scoreboard ul li{
+    border: 2px solid gray;
+    height: 4em;
+    display: flex;
+    justify-content: center;  
+    align-items: center;
+}
