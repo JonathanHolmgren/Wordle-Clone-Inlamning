@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import BoardTiles from './BoardTiles';
-import checkIfTwoWordMatch from '../utils/checkWord';
 import Keyboard from './Keyboard';
+import EnterThePlayer from './EnterThePlayer';
+import checkIfTwoWordMatch from '../utils/checkWord';
+
 import '../styles/WordleGame.css';
 const RANDOM_WORD_URL = 'http://localhost:5080';
 
@@ -22,7 +24,7 @@ function WordleGame({ reset }) {
   const [results, Setresult] = useState(Array(NUM_ATTEMPT).fill(''));
   const [checkWin, setCheckWin] = useState();
   const [countGuesses, setCounterGuesses] = useState(0);
-
+  const [CurrentPlayer, SetCurrentPlayer] = useState();
   const [newWord, SetNewWord] = useState('');
 
   useEffect(() => {
@@ -41,6 +43,20 @@ function WordleGame({ reset }) {
         console.error('Error fetching data:', error);
       });
   }
+
+  const startGame = (player) => {
+    const highscore = {
+      username: player.username,
+      time: '1min 2s',
+    };
+
+    fetch(RANDOM_WORD_URL + '/highscore', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(highscore),
+    });
+    SetCurrentPlayer(player);
+  };
 
   useEffect(() => {
     if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
@@ -99,6 +115,7 @@ function WordleGame({ reset }) {
         submitGuess={submitGuess}
         removeLetter={removeLetter}
       />
+      <EnterThePlayer startGame={startGame} />
     </div>
   );
 }
