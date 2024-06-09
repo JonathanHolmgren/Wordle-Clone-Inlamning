@@ -26,7 +26,6 @@ function EnterThePlayer({ startGame }) {
 
   return (
     <>
-      <button onClick={() => setIsActive(true)}>Öppna Modal</button>
       <div className={`modal-overlay ${isActive ? 'active' : ''}`}>
         <div className={`ContainerEnterPlayer ${isActive ? 'active' : ''}`}>
           <form onSubmit={handleSubmit(handleRegistration, handleError)}>

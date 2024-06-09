@@ -24,8 +24,10 @@ function WordleGame({ reset }) {
   const [results, Setresult] = useState(Array(NUM_ATTEMPT).fill(''));
   const [checkWin, setCheckWin] = useState();
   const [countGuesses, setCounterGuesses] = useState(0);
-  const [CurrentPlayer, SetCurrentPlayer] = useState();
+  const [CurrentPlayer, SetCurrentPlayer] = useState({});
   const [newWord, SetNewWord] = useState('');
+  const [isWon, SetIsWon] = useState(false);
+  const [stopTime, SetstopTime] = useState('');
 
   useEffect(() => {
     FetchDataComponent();
@@ -44,19 +46,37 @@ function WordleGame({ reset }) {
       });
   }
 
-  const startGame = (player) => {
-    const highscore = {
-      username: player.username,
-      time: '1min 2s',
-    };
-
-    fetch(RANDOM_WORD_URL + '/highscore', {
+  async function EndTheGame() {
+    fetch(RANDOM_WORD_URL + '/stop', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(highscore),
-    });
+      body: JSON.stringify(CurrentPlayer),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        SetstopTime(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  const startGame = async (player) => {
+    FetchStartGame();
     SetCurrentPlayer(player);
   };
+
+  async function FetchStartGame() {
+    fetch(RANDOM_WORD_URL + '/start')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
 
   useEffect(() => {
     if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
@@ -78,12 +98,24 @@ function WordleGame({ reset }) {
     }
   }, [guessedLetters, countGuesses, NUM_ATTEMPT]);
 
-  const submitGuess = () => {
+  const submitGuess = async () => {
     if (countGuesses <= NUM_ATTEMPT && guessedLetters.length == 5) {
-      console.log(checkIfTwoWordMatch(newWord, guessedLetters.join('')));
-      setCheckWin(checkIfTwoWordMatch(newWord, guessedLetters.join('')));
+      const x = checkIfTwoWordMatch(newWord, guessedLetters.join(''));
+      console.log(x);
+      setCheckWin(x);
       setCounterGuesses(countGuesses + 1);
       setGuessedLetters('');
+      checkIfWin(x);
+    }
+  };
+
+  const checkIfWin = (x) => {
+    if (x.every((i) => i.result === 'correct')) {
+      console.log('All results are correct');
+      EndTheGame();
+      SetIsWon(true);
+    } else {
+      console.log('Not all results are correct');
     }
   };
 
@@ -101,10 +133,16 @@ function WordleGame({ reset }) {
     Setresult(resetResult);
     SetguessWords(Array(NUM_ATTEMPT).fill(''));
     setCounterGuesses(0);
+    SetIsWon(false);
   };
 
   return (
     <div className='container'>
+      {isWon && (
+        <h1>
+          You won {CurrentPlayer.username}! and your time was {stopTime}s
+        </h1>
+      )}
       <BoardTiles
         guessWords={guessWords}
         results={results}
