@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
-import generateNewWord from './controller.js';
+import { generateNewWord, checkIfTwoWordMatch } from './controller.js';
 import { startWatch, stopWatch } from './time.js';
 import { Highscore } from './models.js';
 
@@ -23,6 +23,7 @@ app.use(express.static('../client/build'));
 app.use(express.json(), cors(corsOptions)); // Use this after the variable declaration
 
 let currentPlayerTime = 0;
+let currentWord = '';
 
 app.get('/', (req, res) => {
   res.status(200).json(generateNewWord());
@@ -30,7 +31,8 @@ app.get('/', (req, res) => {
 
 app.get('/start', (req, res) => {
   startWatch();
-  res.status(200).json('starting timer...');
+  currentWord = generateNewWord();
+  res.status(200).json('starting timer...' + currentWord);
 });
 
 app.get('/stop', (req, res) => {
@@ -46,6 +48,13 @@ app.get('/highscore', async (req, res) => {
   }));
   u.sort((a, b) => a.time - b.time);
   res.status(200).json(u);
+});
+
+app.post('/checkwin', (req, res) => {
+  console.log(req.body.guess);
+  const x = checkIfTwoWordMatch(currentWord, req.body.guess);
+
+  res.status(201).json(x);
 });
 
 app.post('/highscore', async (req, res) => {

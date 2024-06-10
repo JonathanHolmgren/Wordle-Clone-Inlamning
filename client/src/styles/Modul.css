@@ -1,4 +1,4 @@
-.ContainerEnterPlayer{
+.ContainerModul{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,13 +14,13 @@
     z-index: 1001; /* Överlägsen z-index för att ligga ovanpå överlagringen */
 }
 
-.ContainerEnterPlayer .text-danger{
+.ContainerModul .text-danger{
 
     color: red;
     transition: 1s opacity;
 }
 
-.modal-overlay.active .ContainerEnterPlayer {
+.modal-overlay.active .ContainerModul {
     opacity: 1;
     transform: translateY(0);
 }
@@ -45,13 +45,13 @@
 
 /* Responsivitet */
 @media (max-width: 768px) {
-    .ContainerEnterPlayer {
+    .ContainerModul {
         width: 80%;
     }
 }
 
 @media (max-width: 480px) {
-    .ContainerEnterPlayer {
+    .ContainerModul {
         width: 90%;
     }
 }

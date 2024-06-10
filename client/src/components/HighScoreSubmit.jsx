@@ -25,25 +25,28 @@ function HighScoreSubmit({ stopTime, submitHighscore }) {
   return (
     <>
       <div className={`modal-overlay ${isActive ? 'active' : ''}`}>
-        <div className={`ContainerEnterPlayer ${isActive ? 'active' : ''}`}>
-          <form onSubmit={handleSubmit(handleRegistration, handleError)}>
-            <div>
-              <label>Player name </label>
-              <input
-                name='username'
-                type='text'
-                {...register('username', registerOptions.username)}
-              />
-              <small
-                className='text-danger'
-                style={{ opacity: errors?.username ? 1 : 0 }}
-              >
-                {errors?.username && errors.username.message}
-              </small>
-            </div>
-            <p>Your time was {stopTime}</p>
-            <button>submit game</button>
-          </form>
+        <div className={`ContainerModul ${isActive ? 'active' : ''}`}>
+          <div className='contentHighScoreSubmit'>
+            <h2>Congratulations</h2>
+            <p>Your time was {stopTime}s</p>
+            <form onSubmit={handleSubmit(handleRegistration, handleError)}>
+              <div>
+                <label>Enter your name </label>
+                <input
+                  name='username'
+                  type='text'
+                  {...register('username', registerOptions.username)}
+                />
+                <small
+                  className='text-danger'
+                  style={{ opacity: errors?.username ? 1 : 0 }}
+                >
+                  {errors?.username && errors.username.message}
+                </small>
+              </div>
+              <button>submit game</button>
+            </form>
+          </div>
         </div>
       </div>
     </>

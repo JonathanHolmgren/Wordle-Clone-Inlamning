@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import BoardTiles from './BoardTiles';
 import Keyboard from './Keyboard';
-import EnterThePlayer from './EnterThePlayer';
+import GameStart from './GameStart';
 import HighScoreSubmit from './HighScoreSubmit';
+import '../styles/Modul.css';
 
 import checkIfTwoWordMatch from '../utils/checkWord';
 
@@ -26,27 +27,13 @@ function WordleGame({ reset }) {
   const [results, Setresult] = useState(Array(NUM_ATTEMPT).fill(''));
   const [checkWin, setCheckWin] = useState();
   const [countGuesses, setCounterGuesses] = useState(0);
-  // const [CurrentPlayer, SetCurrentPlayer] = useState({});
-  const [newWord, SetNewWord] = useState('');
   const [isWon, SetIsWon] = useState(false);
   const [isGameOver, SetisGameOver] = useState(false);
-
   const [stopTime, SetstopTime] = useState('');
 
   useEffect(() => {
-    FetchDataComponent();
     resetGame();
   }, [reset]);
-
-  useEffect(() => {
-    if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
-      Setresult((curr) => {
-        const newresults = [...curr];
-        newresults[countGuesses] = checkWin;
-        return newresults;
-      });
-    }
-  }, [checkWin]);
 
   useEffect(() => {
     if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
@@ -58,21 +45,20 @@ function WordleGame({ reset }) {
     }
   }, [guessedLetters, countGuesses, NUM_ATTEMPT]);
 
-  async function FetchDataComponent() {
-    fetch(RANDOM_WORD_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        SetNewWord(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
+  useEffect(() => {
+    if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
+      Setresult((curr) => {
+        const newresults = [...curr];
+        newresults[countGuesses] = checkWin;
+        return newresults;
       });
-  }
+    }
+  }, [checkWin]);
 
-  const startGame = () => {
+  // startar spelet på servern
+  function startGame() {
     FetchStartGame();
-  };
+  }
 
   async function FetchStartGame() {
     fetch(RANDOM_WORD_URL + '/start')
@@ -85,6 +71,7 @@ function WordleGame({ reset }) {
       });
   }
 
+  // stoppar spelet, och retunerar tiden det tog mellan start och stop.
   async function EndTheGame() {
     fetch(RANDOM_WORD_URL + '/stop')
       .then((response) => response.json())
@@ -97,6 +84,7 @@ function WordleGame({ reset }) {
       });
   }
 
+  // Gör en Post request för spara highscore i databasen
   async function submitHighscore(formdata) {
     const data = {
       username: formdata.username,
@@ -119,18 +107,26 @@ function WordleGame({ reset }) {
       });
   }
 
-  const submitGuess = async () => {
-    if (countGuesses <= NUM_ATTEMPT && guessedLetters.length == 5) {
-      const x = checkIfTwoWordMatch(newWord, guessedLetters.join(''));
-      console.log(x);
-      setCheckWin(x);
-      setCounterGuesses(countGuesses + 1);
-      setGuessedLetters('');
-      checkIfWin(x);
-    }
-  };
+  function submitGuess() {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        guess: guessedLetters.join(''),
+      }),
+    };
+    fetch(RANDOM_WORD_URL + '/checkwin', requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCheckWin(data);
+        setCounterGuesses(countGuesses + 1);
+        setGuessedLetters('');
+        checkIfWin(data);
+      });
+  }
 
-  const checkIfWin = (x) => {
+  function checkIfWin(x) {
     if (x.every((i) => i.result === 'correct')) {
       console.log('All results are correct');
       EndTheGame();
@@ -140,7 +136,7 @@ function WordleGame({ reset }) {
     } else {
       console.log('Not all results are correct');
     }
-  };
+  }
 
   function handleKeyPress(key) {
     if (guessedLetters.length >= WORD_LENGTH) return;
@@ -153,8 +149,9 @@ function WordleGame({ reset }) {
     }
   }
   const resetGame = () => {
-    Setresult(resetResult);
     SetguessWords(Array(NUM_ATTEMPT).fill(''));
+    setGuessedLetters('');
+    Setresult(resetResult);
     setCounterGuesses(0);
     SetIsWon(false);
     startGame();
@@ -179,7 +176,7 @@ function WordleGame({ reset }) {
         submitGuess={submitGuess}
         removeLetter={removeLetter}
       />
-      <EnterThePlayer startGame={startGame} />
+      <GameStart startGame={startGame} />
     </div>
   );
 }
