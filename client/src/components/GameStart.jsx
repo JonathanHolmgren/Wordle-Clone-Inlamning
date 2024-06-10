@@ -1,8 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../styles/GameStart.css';
 
-function GameStart({ startGame }) {
+function GameStart({ startGame, isGameOver }) {
   const [isActive, setIsActive] = useState(true);
+
+  useEffect(() => {
+    if (isGameOver) {
+      setIsActive(true);
+    }
+  }, [isGameOver]);
 
   const start = () => {
     startGame();

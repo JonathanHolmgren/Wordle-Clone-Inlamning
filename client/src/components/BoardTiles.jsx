@@ -10,6 +10,7 @@ function BoardTiles({ guessWords, results }) {
       <BoardRowTiles word={guessWords[2]} result={results[2 + 1]} />
       <BoardRowTiles word={guessWords[3]} result={results[3 + 1]} />
       <BoardRowTiles word={guessWords[4]} result={results[4 + 1]} />
+      <BoardRowTiles word={guessWords[5]} result={results[5 + 1]} />
     </div>
   );
 }

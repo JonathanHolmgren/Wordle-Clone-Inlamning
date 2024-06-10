@@ -20,6 +20,7 @@ function WordleGame({ reset }) {
     ['active', 'active', 'active', 'active', 'active'],
     ['active', 'active', 'active', 'active', 'active'],
     ['active', 'active', 'active', 'active', 'active'],
+    ['active', 'active', 'active', 'active', 'active'],
   ];
 
   const [guessedLetters, setGuessedLetters] = useState('');
@@ -126,13 +127,15 @@ function WordleGame({ reset }) {
       });
   }
 
-  function checkIfWin(x) {
-    if (x.every((i) => i.result === 'correct')) {
+  function checkIfWin(returResult) {
+    if (returResult.every((i) => i.result === 'correct')) {
       console.log('All results are correct');
       EndTheGame();
       SetIsWon(true);
-    } else if (countGuesses == NUM_ATTEMPT - 2) {
+    } else if (countGuesses == NUM_ATTEMPT - 1) {
+      alert('you lose');
       SetisGameOver(true);
+      resetGame();
     } else {
       console.log('Not all results are correct');
     }
@@ -176,7 +179,7 @@ function WordleGame({ reset }) {
         submitGuess={submitGuess}
         removeLetter={removeLetter}
       />
-      <GameStart startGame={startGame} />
+      <GameStart startGame={startGame} isGameOver={isGameOver} />
     </div>
   );
 }
