@@ -1,8 +1,6 @@
 import '../styles/HighscoreBoard.css';
 
 function HighscoreBoard({ highscores }) {
-  //const scores = Array(10).fill({ name: 'Joe Doe', score: '1 min 2s' });
-
   const renderScores = highscores.map((item, idx) => (
     <li key={idx}>
       Name: {item.username} - Score: {item.time}{' '}

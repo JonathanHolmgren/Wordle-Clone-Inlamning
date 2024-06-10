@@ -15,7 +15,6 @@ function HighscorePage() {
     fetch(RANDOM_WORD_URL + '/highscore')
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         SetHighscores(data);
       })
       .catch((error) => {

@@ -20,7 +20,6 @@ function GameStart({ startGame, isGameOver }) {
       <div className={`modal-overlay ${isActive ? 'active' : ''}`}>
         <div className={`ContainerModul ${isActive ? 'active' : ''}`}>
           <div className='contentStartGame'>
-            <img src='../public/Wordle-Emblem.png' alt='' />
             <h2>Welcome</h2>
             <p>Get 6 chances to guess a 5-letter word.</p>
             <button onClick={start}>start game</button>

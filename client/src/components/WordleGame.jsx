@@ -75,7 +75,6 @@ function WordleGame({ reset }) {
     fetch(RANDOM_WORD_URL + '/stop')
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         SetstopTime(data);
       })
       .catch((error) => {
@@ -98,9 +97,7 @@ function WordleGame({ reset }) {
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
+      .then((data) => {})
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
@@ -118,7 +115,6 @@ function WordleGame({ reset }) {
       fetch(RANDOM_WORD_URL + '/checkwin', requestOptions)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           setCheckWin(data);
           setCounterGuesses(countGuesses + 1);
           setGuessedLetters('');
@@ -129,7 +125,6 @@ function WordleGame({ reset }) {
 
   function checkIfWin(returResult) {
     if (returResult.every((i) => i.result === 'correct')) {
-      console.log('All results are correct');
       EndTheGame();
       SetIsWon(true);
     } else if (countGuesses == NUM_ATTEMPT - 1) {

@@ -16,23 +16,23 @@ describe('checkIfTwoWordMatch', () => {
 
   //Testa test gjode jag för att kolla så resultaten blev som önskat.
   it('This test is to se if the game is "works"', () => {
-    const resultArray = checkIfTwoWordMatch('CYKLA', 'HALLÅ');
-    expect(resultArray[0].result).toBe('incorrect');
-    expect(resultArray[1].result).toBe('misplaced');
-    expect(resultArray[2].result).toBe('incorrect');
-    expect(resultArray[3].result).toBe('correct');
-    expect(resultArray[4].result).toBe('incorrect');
+    const resultArray = checkIfTwoWordMatch('BLOWN', 'CLOUD');
+    expect(resultArray[0].result).toBe('wrong');
+    expect(resultArray[1].result).toBe('correct');
+    expect(resultArray[2].result).toBe('correct');
+    expect(resultArray[3].result).toBe('wrong');
+    expect(resultArray[4].result).toBe('wrong');
   });
 
   it('This test is to see if the first L is incorrect becuase the other L in the guess is correct', () => {
     const resultArray = checkIfTwoWordMatch('CYKLA', 'HALLÅ');
-    expect(resultArray[2].result).toBe('incorrect');
+    expect(resultArray[2].result).toBe('wrong');
   });
 
   it('This test is to see if the first L is correct and the other L will return incorrect. Becuase There are no more L in the correct word', () => {
     const resultArray = checkIfTwoWordMatch('COLTS', 'PILLS');
     expect(resultArray[2].result).toBe('correct');
-    expect(resultArray[3].result).toBe('incorrect');
+    expect(resultArray[3].result).toBe('wrong');
   });
 });
 

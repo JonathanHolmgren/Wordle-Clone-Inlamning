@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import HomePage from './pages/HomePage';
 import HighscorePage from './pages/HighscorePage';
+import AboutPage from './pages/AboutPage';
+
 import './App.css';
 
 function App() {
@@ -13,6 +15,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path='/homepage' element={<HomePage />} />
           <Route path='/highscore' element={<HighscorePage />} />
+          <Route path='/about' element={<AboutPage />} />
         </Routes>
       </BrowserRouter>
     </>

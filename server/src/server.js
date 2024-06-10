@@ -55,7 +55,6 @@ app.post('/checkwin', (req, res) => {
 });
 
 app.post('/highscore', async (req, res) => {
-  // console.log(req.body);
   const highscore = new Highscore();
   highscore.username = req.body.username;
   highscore.time = currentPlayerTime;
