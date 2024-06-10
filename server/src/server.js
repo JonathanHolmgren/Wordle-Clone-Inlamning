@@ -44,14 +44,21 @@ app.get('/highscore', async (req, res) => {
     username: score.username,
     time: score.time,
   }));
+  u.sort((a, b) => a.time - b.time);
   res.status(200).json(u);
 });
 
 app.post('/highscore', async (req, res) => {
-  const highscore = new Highscore(req.body);
-  highscore.time = x;
+  // console.log(req.body);
+  const highscore = new Highscore();
+  highscore.username = req.body.username;
+  highscore.time = currentPlayerTime;
+  highscore.countGuesses = req.body.countGuesses;
+  highscore.guessWords = req.body.guessWords;
+  highscore.wordLength = req.body.wordLength;
+
   await highscore.save();
-  res.status(201).json(x);
+  res.status(201).json(highscore);
 });
 
 app.listen(port, () => {
