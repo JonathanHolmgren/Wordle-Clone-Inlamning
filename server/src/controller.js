@@ -14,6 +14,7 @@ function checkIfTwoWordMatch(correctWord, guessWord) {
 
   //Denna funktion kollar om samma index i de två olika arrays har samma index.
   for (let i = 0; i < correctWordArray.length; i++) {
+    let count = 0;
     if (guessWordArray[i] == correctWordArray[i]) {
       resultArray.push({
         letter: guessWordArray[i],
@@ -51,9 +52,5 @@ function checkIfTwoWordMatch(correctWord, guessWord) {
 
   return resultArray;
 }
-
-checkIfTwoWordMatch('CYKLA', 'HALLÅ');
-
-console.log(checkIfTwoWordMatch('CYKLA', 'HALLÅ'));
 
 export { generateNewWord, checkIfTwoWordMatch };

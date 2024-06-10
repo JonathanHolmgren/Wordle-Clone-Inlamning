@@ -5,8 +5,6 @@ import GameStart from './GameStart';
 import HighScoreSubmit from './HighScoreSubmit';
 import '../styles/Modul.css';
 
-import checkIfTwoWordMatch from '../utils/checkWord';
-
 import '../styles/WordleGame.css';
 const RANDOM_WORD_URL = 'http://localhost:5080';
 
@@ -109,22 +107,24 @@ function WordleGame({ reset }) {
   }
 
   function submitGuess() {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        guess: guessedLetters.join(''),
-      }),
-    };
-    fetch(RANDOM_WORD_URL + '/checkwin', requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setCheckWin(data);
-        setCounterGuesses(countGuesses + 1);
-        setGuessedLetters('');
-        checkIfWin(data);
-      });
+    if (!isWon) {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          guess: guessedLetters.join(''),
+        }),
+      };
+      fetch(RANDOM_WORD_URL + '/checkwin', requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setCheckWin(data);
+          setCounterGuesses(countGuesses + 1);
+          setGuessedLetters('');
+          checkIfWin(data);
+        });
+    }
   }
 
   function checkIfWin(returResult) {

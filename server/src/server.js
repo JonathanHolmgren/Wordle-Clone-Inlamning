@@ -1,5 +1,4 @@
 import express from 'express';
-import path from 'path';
 import cors from 'cors';
 import { generateNewWord, checkIfTwoWordMatch } from './controller.js';
 import { startWatch, stopWatch } from './time.js';
@@ -19,14 +18,14 @@ const corsOptions = {
 const app = express();
 const port = 5080;
 
-app.use(express.static('../client/build'));
+app.use(express.static('../client/dist'));
 app.use(express.json(), cors(corsOptions)); // Use this after the variable declaration
 
 let currentPlayerTime = 0;
 let currentWord = '';
 
 app.get('/', (req, res) => {
-  res.status(200).json(generateNewWord());
+  res.status(200).json('Homepage');
 });
 
 app.get('/start', (req, res) => {
@@ -51,9 +50,7 @@ app.get('/highscore', async (req, res) => {
 });
 
 app.post('/checkwin', (req, res) => {
-  console.log(req.body.guess);
   const x = checkIfTwoWordMatch(currentWord, req.body.guess);
-
   res.status(201).json(x);
 });
 
@@ -73,17 +70,3 @@ app.post('/highscore', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-// app.get('/correctword', (req, res) => {
-//   const fakeListDatabase = ['word1', 'word2', 'word3']; // Fake data for example
-//   res.status(200).json(fakeListDatabase);
-// });
-
-// app.get('/about', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../../client/build', 'about.html'));
-// });
-
-// app.get('/currentplayer', (req, res) => {
-//   startWatch();
-//   res.status(200).json(currentPlayerTime);
-// });
