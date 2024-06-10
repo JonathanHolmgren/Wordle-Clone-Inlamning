@@ -22,6 +22,8 @@ const port = 5080;
 app.use(express.static('../client/build'));
 app.use(express.json(), cors(corsOptions)); // Use this after the variable declaration
 
+let currentPlayerTime = 0;
+
 app.get('/', (req, res) => {
   res.status(200).json(generateNewWord());
 });
@@ -31,13 +33,9 @@ app.get('/start', (req, res) => {
   res.status(200).json('starting timer...');
 });
 
-app.get('/correctword', (req, res) => {
-  const fakeListDatabase = ['word1', 'word2', 'word3']; // Fake data for example
-  res.status(200).json(fakeListDatabase);
-});
-
-app.get('/about', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/build', 'about.html'));
+app.get('/stop', (req, res) => {
+  currentPlayerTime = stopWatch();
+  res.status(200).json('stop the time on ' + currentPlayerTime + 'seconds');
 });
 
 app.get('/highscore', async (req, res) => {
@@ -49,9 +47,8 @@ app.get('/highscore', async (req, res) => {
   res.status(200).json(u);
 });
 
-app.post('/stop', async (req, res) => {
+app.post('/highscore', async (req, res) => {
   const highscore = new Highscore(req.body);
-  const x = stopWatch();
   highscore.time = x;
   await highscore.save();
   res.status(201).json(x);
@@ -60,3 +57,17 @@ app.post('/stop', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+// app.get('/correctword', (req, res) => {
+//   const fakeListDatabase = ['word1', 'word2', 'word3']; // Fake data for example
+//   res.status(200).json(fakeListDatabase);
+// });
+
+// app.get('/about', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../../client/build', 'about.html'));
+// });
+
+// app.get('/currentplayer', (req, res) => {
+//   startWatch();
+//   res.status(200).json(currentPlayerTime);
+// });
