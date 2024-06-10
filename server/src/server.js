@@ -35,7 +35,7 @@ app.get('/start', (req, res) => {
 
 app.get('/stop', (req, res) => {
   currentPlayerTime = stopWatch();
-  res.status(200).json('stop the time on ' + currentPlayerTime + 'seconds');
+  res.status(200).json(currentPlayerTime);
 });
 
 app.get('/highscore', async (req, res) => {

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import BoardTiles from './BoardTiles';
 import Keyboard from './Keyboard';
 import EnterThePlayer from './EnterThePlayer';
+import HighScoreSubmit from './HighScoreSubmit';
+
 import checkIfTwoWordMatch from '../utils/checkWord';
 
 import '../styles/WordleGame.css';
@@ -24,9 +26,11 @@ function WordleGame({ reset }) {
   const [results, Setresult] = useState(Array(NUM_ATTEMPT).fill(''));
   const [checkWin, setCheckWin] = useState();
   const [countGuesses, setCounterGuesses] = useState(0);
-  const [CurrentPlayer, SetCurrentPlayer] = useState({});
+  // const [CurrentPlayer, SetCurrentPlayer] = useState({});
   const [newWord, SetNewWord] = useState('');
   const [isWon, SetIsWon] = useState(false);
+  const [isGameOver, SetisGameOver] = useState(false);
+
   const [stopTime, SetstopTime] = useState('');
 
   useEffect(() => {
@@ -66,9 +70,8 @@ function WordleGame({ reset }) {
       });
   }
 
-  const startGame = async (player) => {
+  const startGame = () => {
     FetchStartGame();
-    SetCurrentPlayer(player);
   };
 
   async function FetchStartGame() {
@@ -83,15 +86,33 @@ function WordleGame({ reset }) {
   }
 
   async function EndTheGame() {
-    fetch(RANDOM_WORD_URL + '/stop', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(CurrentPlayer),
-    })
+    fetch(RANDOM_WORD_URL + '/stop')
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
         SetstopTime(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  async function submitHighscore(formdata) {
+    const data = {
+      username: formdata.username,
+      countGuesses: countGuesses,
+      guessWords: guessWords,
+      wordLength: WORD_LENGTH,
+    };
+
+    fetch(RANDOM_WORD_URL + '/highscore', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -114,6 +135,8 @@ function WordleGame({ reset }) {
       console.log('All results are correct');
       EndTheGame();
       SetIsWon(true);
+    } else if (countGuesses == NUM_ATTEMPT - 2) {
+      SetisGameOver(true);
     } else {
       console.log('Not all results are correct');
     }
@@ -134,15 +157,18 @@ function WordleGame({ reset }) {
     SetguessWords(Array(NUM_ATTEMPT).fill(''));
     setCounterGuesses(0);
     SetIsWon(false);
+    startGame();
   };
 
   return (
     <div className='container'>
       {isWon && (
-        <h1>
-          You won {CurrentPlayer.username}! and your time was {stopTime}s
-        </h1>
+        <HighScoreSubmit
+          stopTime={stopTime}
+          submitHighscore={submitHighscore}
+        />
       )}
+
       <BoardTiles
         guessWords={guessWords}
         results={results}
