@@ -34,28 +34,32 @@ function WordleGame({ reset }) {
     resetGame();
   }, [reset]);
 
+  useEffect(() => {
+    if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
+      Setresult((curr) => {
+        const newresults = [...curr];
+        newresults[countGuesses] = checkWin;
+        return newresults;
+      });
+    }
+  }, [checkWin]);
+
+  useEffect(() => {
+    if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
+      SetguessWords((curr) => {
+        const newGuessWords = [...curr];
+        newGuessWords[countGuesses] = guessedLetters;
+        return newGuessWords;
+      });
+    }
+  }, [guessedLetters, countGuesses, NUM_ATTEMPT]);
+
   async function FetchDataComponent() {
     fetch(RANDOM_WORD_URL)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
         SetNewWord(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  }
-
-  async function EndTheGame() {
-    fetch(RANDOM_WORD_URL + '/stop', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(CurrentPlayer),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        SetstopTime(data);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -78,25 +82,21 @@ function WordleGame({ reset }) {
       });
   }
 
-  useEffect(() => {
-    if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
-      Setresult((curr) => {
-        const newresults = [...curr];
-        newresults[countGuesses] = checkWin;
-        return newresults;
+  async function EndTheGame() {
+    fetch(RANDOM_WORD_URL + '/stop', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(CurrentPlayer),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        SetstopTime(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
       });
-    }
-  }, [checkWin]);
-
-  useEffect(() => {
-    if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
-      SetguessWords((curr) => {
-        const newGuessWords = [...curr];
-        newGuessWords[countGuesses] = guessedLetters;
-        return newGuessWords;
-      });
-    }
-  }, [guessedLetters, countGuesses, NUM_ATTEMPT]);
+  }
 
   const submitGuess = async () => {
     if (countGuesses <= NUM_ATTEMPT && guessedLetters.length == 5) {
