@@ -5,10 +5,9 @@ import GameStart from './GameStart';
 import HighScoreSubmit from './HighScoreSubmit';
 import '../styles/Modul.css';
 
-import '../styles/WordleGame.css';
 const RANDOM_WORD_URL = 'http://localhost:5080';
 
-function WordleGame({ reset }) {
+function WordleGame() {
   const WORD_LENGTH = 5;
   const NUM_ATTEMPT = 6;
 
@@ -29,10 +28,6 @@ function WordleGame({ reset }) {
   const [isWon, SetIsWon] = useState(false);
   const [isGameOver, SetisGameOver] = useState(false);
   const [stopTime, SetstopTime] = useState('');
-
-  useEffect(() => {
-    resetGame();
-  }, [reset]);
 
   useEffect(() => {
     if (countGuesses >= 0 && countGuesses < NUM_ATTEMPT) {
@@ -157,6 +152,9 @@ function WordleGame({ reset }) {
 
   return (
     <div className='container'>
+      <button onClick={resetGame} className='ResetButton'>
+        Reset Game
+      </button>
       {isWon && (
         <HighScoreSubmit
           stopTime={stopTime}

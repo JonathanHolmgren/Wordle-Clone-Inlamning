@@ -1,0 +1,11 @@
+<h1 class='headingHighscore'>Highscores</h1>
+<div class='containerHighScore'>
+  <button></button>
+  <div class='scoreboard'>
+    <ul>
+      {{#each entries}}
+        <li>Name: {{username}} - Score: {{time}}</li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
