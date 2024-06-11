@@ -3,12 +3,15 @@ import cors from 'cors';
 import { generateNewWord, checkIfTwoWordMatch } from './controller.js';
 import { startWatch, stopWatch } from './time.js';
 import { Highscore } from './models.js';
-
+import { engine } from 'express-handlebars';
 import dontenv from 'dotenv';
 import mongoose from 'mongoose';
 
 dontenv.config();
 mongoose.connect(process.env.MONGODB_URL);
+
+let currentPlayerTime = 0;
+let currentWord = '';
 
 const corsOptions = {
   origin: '*',
@@ -18,14 +21,15 @@ const corsOptions = {
 const app = express();
 const port = 5080;
 
-app.use(express.static('../client/dist'));
+app.use('/static', express.static('./static'));
 app.use(express.json(), cors(corsOptions)); // Use this after the variable declaration
 
-let currentPlayerTime = 0;
-let currentWord = '';
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', './templates');
 
 app.get('/', (req, res) => {
-  res.status(200).json('Homepage');
+  res.render('game');
 });
 
 app.get('/start', (req, res) => {
