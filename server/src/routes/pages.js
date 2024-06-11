@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { Highscore } from '../models.js';
-import mongoose from 'mongoose';
 
 const router = Router();
 
@@ -16,11 +15,7 @@ router.get('/highscores', async (req, res) => {
   const entrymodels = await Highscore.find().limit(10);
   const entries = entrymodels.map((model) => model.toJSON());
 
-  //   const u = s.map((score) => ({
-  //     username: score.username,
-  //     time: score.time,
-  //   }));
-  //   u.sort((a, b) => a.time - b.time);
+  entries.sort((a, b) => a.time - b.time);
   res.render('highscore', { entries });
 });
 

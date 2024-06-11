@@ -55,7 +55,7 @@ function WordleGame() {
   }
 
   async function FetchStartGame() {
-    fetch(RANDOM_WORD_URL + '/start')
+    fetch(RANDOM_WORD_URL + '/api/games/wordle/start')
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -67,7 +67,7 @@ function WordleGame() {
 
   // stoppar spelet, och retunerar tiden det tog mellan start och stop.
   async function EndTheGame() {
-    fetch(RANDOM_WORD_URL + '/stop')
+    fetch(RANDOM_WORD_URL + '/api/games/wordle/stop')
       .then((response) => response.json())
       .then((data) => {
         SetstopTime(data);
@@ -86,7 +86,7 @@ function WordleGame() {
       wordLength: WORD_LENGTH,
     };
 
-    fetch(RANDOM_WORD_URL + '/highscore', {
+    fetch(RANDOM_WORD_URL + '/api/games/wordle/highscore', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -107,7 +107,7 @@ function WordleGame() {
           guess: guessedLetters.join(''),
         }),
       };
-      fetch(RANDOM_WORD_URL + '/checkwin', requestOptions)
+      fetch(RANDOM_WORD_URL + '/api/games/wordle/checkwin', requestOptions)
         .then((response) => response.json())
         .then((data) => {
           setCheckWin(data);

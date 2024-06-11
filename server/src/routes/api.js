@@ -8,23 +8,23 @@ const router = Router();
 let currentPlayerTime = 0;
 let currentWord = '';
 
-router.get('/start', (req, res) => {
+router.get('/api/games/wordle/start', (req, res) => {
   startWatch();
   currentWord = generateNewWord();
   res.status(200).json('starting timer...' + currentWord);
 });
 
-router.get('/stop', (req, res) => {
+router.get('/api/games/wordle/stop', (req, res) => {
   currentPlayerTime = stopWatch();
   res.status(200).json(currentPlayerTime);
 });
 
-router.post('/checkwin', (req, res) => {
+router.post('/api/games/wordle/checkwin', (req, res) => {
   const x = checkIfTwoWordMatch(currentWord, req.body.guess);
   res.status(201).json(x);
 });
 
-router.post('/highscore', async (req, res) => {
+router.post('/api/games/wordle/highscore', async (req, res) => {
   const highscore = new Highscore();
   highscore.username = req.body.username;
   highscore.time = currentPlayerTime;
