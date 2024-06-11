@@ -7,7 +7,8 @@ import apirouter from './routes/api.js';
 import pagesrouter from './routes/pages.js';
 
 dontenv.config();
-mongoose.connect(process.env.MONGODB_URL);
+// mongoose.connect(process.env.MONGODB_URL); // har en .env fil
+mongoose.connect('mongodb://127.0.0.1:27017/highscore');
 
 const corsOptions = {
   origin: '*',
